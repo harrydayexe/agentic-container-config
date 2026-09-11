@@ -15,6 +15,7 @@ agentic-token() {
 }
 
 agentic-up() {
+  local -x AGENTIC_GH_TOKEN
   AGENTIC_GH_TOKEN="$(agentic-token)" || return
   devcontainer up \
     --workspace-folder "$AGENTIC_WS" \
@@ -34,6 +35,7 @@ agentic-down() {
 }
 
 agentic() {
+  local -x AGENTIC_GH_TOKEN
   AGENTIC_GH_TOKEN="$(agentic-token)" || return
   if [ $# -eq 0 ]; then
     devcontainer exec --workspace-folder "$AGENTIC_WS" --config "$AGENTIC_CFG" zsh
@@ -41,6 +43,7 @@ agentic() {
     devcontainer exec --workspace-folder "$AGENTIC_WS" --config "$AGENTIC_CFG" "$@"
   fi
 }
+
 ```
 
 Assumes that the PAT to connect to GitHub is stored in keychain at `agentic-gh-token`
