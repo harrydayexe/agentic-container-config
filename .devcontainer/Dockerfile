@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/devcontainers/base:ubuntu
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-      iptables ipset dnsutils jq ripgrep \
+      iptables ipset dnsutils jq ripgrep vim \
     && rm -rf /var/lib/apt/lists/*
 
 # Organization-style policy the agent cannot override from repo files
