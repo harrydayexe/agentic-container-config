@@ -1,0 +1,17 @@
+[user]
+    name = Harry Day
+    email = contact@harryday.xyz
+[credential "https://github.com"]
+	helper = !gh auth git-credential
+[safe]
+	directory = *
+[pull]
+    ff = only
+    rebase = true
+[core]
+    ignorecase = false
+    excludesfile = /home/vscode/.gitignore.agentic
+[push]
+    autoSetupRemote = true
+[commit]
+	gpgsign = false

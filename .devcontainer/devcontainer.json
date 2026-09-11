@@ -1,0 +1,32 @@
+{
+  "name": "agentic",
+  "build": { "dockerfile": "Dockerfile" },
+  "remoteUser": "vscode",
+
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localEnv:HOME}/Developer/agentic/workspace,target=/workspace,type=bind,consistency=cached",
+
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
+  },
+
+  "mounts": [
+    "source=${localEnv:HOME}/Developer/agentic/config/claude,target=/home/vscode/.claude,type=bind",
+    "source=${localEnv:HOME}/Developer/agentic/config/.gitconfig.agentic,target=/home/vscode/.gitconfig.agentic,type=bind,readonly"
+  ],
+
+  "containerEnv": {
+    "CLAUDE_CONFIG_DIR": "/home/vscode/.claude",
+    "GIT_CONFIG_GLOBAL": "/home/vscode/.gitconfig.agentic",
+    "DISABLE_AUTOUPDATER": "1"
+  },
+
+  "remoteEnv": {
+    "GH_TOKEN": "${localEnv:AGENTIC_GH_TOKEN}"
+  },
+
+  "runArgs": ["--cap-add=NET_ADMIN", "--cap-add=NET_RAW"],
+  "postCreateCommand": "sudo /usr/local/bin/agentic-firewall.sh"
+}

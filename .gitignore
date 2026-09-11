@@ -1,0 +1,17 @@
+# Credentials — NEVER commit
+claude/.credentials.json
+claude/.claude.json
+claude/.claude.json.backup*
+claude/backups/
+
+# Runtime state
+claude/history.jsonl
+claude/cache/
+claude/history/
+claude/projects/
+claude/todos/
+claude/statsig/
+claude/debug/
+claude/shell-snapshots/
+claude/plugins/
+claude/file-history/
