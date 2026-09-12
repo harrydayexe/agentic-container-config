@@ -15,7 +15,8 @@
 
   "mounts": [
     "source=${localEnv:HOME}/Developer/agentic/config/claude,target=/home/vscode/.claude,type=bind",
-    "source=${localEnv:HOME}/Developer/agentic/config/.gitconfig.agentic,target=/home/vscode/.gitconfig.agentic,type=bind,readonly"
+    "source=${localEnv:HOME}/Developer/agentic/config/.gitconfig.agentic,target=/home/vscode/.gitconfig.agentic,type=bind,readonly",
+  "source=${localEnv:HOME}/go/pkg/mod,target=/home/vscode/go/pkg/mod,type=bind"
   ],
 
   "containerEnv": {
@@ -31,5 +32,5 @@
   },
 
   "runArgs": ["--cap-add=NET_ADMIN", "--cap-add=NET_RAW"],
-  "postCreateCommand": "sudo /usr/local/bin/agentic-firewall.sh"
+  "postCreateCommand": "go install golang.org/x/vuln/cmd/govulncheck@latest && sudo /usr/local/bin/agentic-firewall.sh"
 }
