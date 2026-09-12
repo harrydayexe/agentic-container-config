@@ -15,3 +15,11 @@ claude/debug/
 claude/shell-snapshots/
 claude/plugins/
 claude/file-history/
+claude/daemon.lock
+claude/daemon.log
+claude/daemon.status.json
+claude/daemon/
+claude/jobs/
+claude/sessions/
+
+.last-cleanup
