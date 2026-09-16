@@ -10,13 +10,14 @@
     "ghcr.io/devcontainers/features/node:1": {},
     "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/devcontainers/features/go:1": {},
+    "ghcr.io/devcontainers-extra/features/ocaml-opam:1": {},
     "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
   },
 
   "mounts": [
     "source=${localEnv:HOME}/Developer/agentic/config/claude,target=/home/vscode/.claude,type=bind",
     "source=${localEnv:HOME}/Developer/agentic/config/.gitconfig.agentic,target=/home/vscode/.gitconfig.agentic,type=bind,readonly",
-  "source=${localEnv:HOME}/go/pkg/mod,target=/home/vscode/go/pkg/mod,type=bind"
+    "source=agentic-go-mod,target=/home/vscode/go/pkg/mod,type=volume"
   ],
 
   "containerEnv": {
@@ -24,7 +25,14 @@
     "GIT_CONFIG_GLOBAL": "/home/vscode/.gitconfig.agentic",
     "DISABLE_AUTOUPDATER": "1",
     "EDITOR": "vim",
-    "VISUAL": "vim"
+    "VISUAL": "vim",
+
+    "HTTP_PROXY": "http://127.0.0.1:3128",
+    "HTTPS_PROXY": "http://127.0.0.1:3128",
+    "http_proxy": "http://127.0.0.1:3128",
+    "https_proxy": "http://127.0.0.1:3128",
+    "NO_PROXY": "localhost,127.0.0.1,::1",
+    "no_proxy": "localhost,127.0.0.1,::1"
   },
 
   "remoteEnv": {
@@ -32,5 +40,13 @@
   },
 
   "runArgs": ["--cap-add=NET_ADMIN", "--cap-add=NET_RAW"],
-  "postCreateCommand": "go install golang.org/x/vuln/cmd/govulncheck@latest && sudo /usr/local/bin/agentic-firewall.sh"
+
+  // Required: keeps the image ENTRYPOINT, which establishes the network
+  // sandbox on every container start and fails closed if it cannot. Without
+  // this the devcontainer CLI replaces the entrypoint and the container can
+  // come up with unrestricted network access.
+  "overrideCommand": false,
+
+  // Runs after the entrypoint, so the network is already allowlisted.
+  "postCreateCommand": "go install golang.org/x/vuln/cmd/govulncheck@latest"
 }
