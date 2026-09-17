@@ -17,7 +17,14 @@ COPY --chown=root:root --chmod=444 squid.conf /etc/squid/squid.conf
 # only ever runs this exact content.
 COPY --chown=root:root --chmod=555 agentic-netsetup.sh /usr/local/bin/agentic-netsetup.sh
 COPY --chown=root:root --chmod=555 agentic-entrypoint.sh /usr/local/bin/agentic-entrypoint.sh
-RUN echo "vscode ALL=(root) NOPASSWD: /usr/local/bin/agentic-netsetup.sh" \
+
+# The base image grants `vscode` passwordless root over everything, which would
+# undo the whole sandbox: root in here can rewrite squid.conf or simply flush
+# the iptables rules using the NET_ADMIN cap the container holds. Replace it
+# with a grant for the one script that has to run as root, so the read-only
+# modes above are a real boundary rather than a speed bump.
+RUN rm -f /etc/sudoers.d/vscode \
+ && echo "vscode ALL=(root) NOPASSWD: /usr/local/bin/agentic-netsetup.sh" \
       > /etc/sudoers.d/agentic-netsetup \
  && chmod 440 /etc/sudoers.d/agentic-netsetup
 
